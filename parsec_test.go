@@ -55,14 +55,10 @@ type Funcname struct{}
 
 func (Funcname) Parse(input string) (bool, string) {
 	azAZ := OR(Range('a', 'z'), Range('A', 'Z'))
-	pattern := SEQ(azAZ, NOT(azAZ))
-	succ, remain := pattern.Parse(input)
-	if succ {
-		return true, remain
-	}
-
-	xx := SEQ(azAZ, Funcname{})
-	return xx.Parse(input)
+	p1 := SEQ(azAZ, NOT(azAZ))
+	p2 := SEQ(azAZ, Funcname{})
+	p := OR(p1, p2)
+	return p.Parse(input)
 }
 
 func (r *BenchResult) Parse(input string) (bool, string) {
